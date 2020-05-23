@@ -37,6 +37,7 @@ function App() {
 	const [addData, { loading: mutationLoading }] = useMutation(mutation, {
 		client,
 	})
+	console.log('your data', data)
 
 	const formRef = React.createRef()
 
@@ -96,7 +97,28 @@ function App() {
 		<ApolloProvider client={client}>
 			<div className="App">
 				<h1 onClick={setSecret}>Outside Inside</h1>
-				{JSON.stringify(data.data)}
+
+				<details>
+					<summary>Your data</summary>
+					<table border="1">
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Data</th>
+							</tr>
+						</thead>
+						<tbody>
+							{data.data.map(({ date, data }) => (
+								<tr key={date}>
+									<td>{date}</td>
+									<td>
+										<pre>{JSON.stringify(data, null, 2)}</pre>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</details>
 				<form ref={formRef} onSubmit={handleSubmit}>
 					<label>
 						Date{' '}
