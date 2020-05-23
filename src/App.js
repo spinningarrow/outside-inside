@@ -9,8 +9,8 @@ const client = new ApolloClient({
 	link: new HttpLink({
 		uri: 'https://busy-ellis.herokuapp.com/v1/graphql',
 		headers: {
-			'x-hasura-admin-secret': sessionStorage.getItem('secret')
-		}
+			'x-hasura-admin-secret': sessionStorage.getItem('secret'),
+		},
 	}),
 })
 
@@ -37,6 +37,11 @@ function App() {
 	const [addData, result] = useMutation(mutation, { client })
 
 	const formRef = React.createRef()
+
+	const setSecret = () => {
+		const secret = window.prompt('Password?')
+		sessionStorage.setItem('secret', secret)
+	}
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
@@ -65,12 +70,18 @@ function App() {
 	}
 
 	if (loading) return <div>Loading</div>
-	if (error) return <div>Error: {error}</div>
+	if (error)
+		return (
+			<div>
+				<h1 onClick={setSecret}>Outside Inside</h1>
+				<p>Error :(</p>
+			</div>
+		)
 
 	return (
 		<ApolloProvider client={client}>
 			<div className="App">
-				<p>HELLO Xenia</p>
+				<h1 onClick={setSecret}>Outside Inside</h1>
 				{JSON.stringify(data.data)}
 				<form ref={formRef} onSubmit={handleSubmit}>
 					<label>
