@@ -47,24 +47,36 @@ function App() {
 		event.preventDefault()
 		console.log('form submitted', formRef.current)
 		const form = formRef.current
-		const data = {
-			date: form.date.value,
-			medicine: form.medicine.value,
-			medicineTime: form.medicineTime.value,
-			bedtime: form.bedtime.value,
-			waketime: form.waketime.value,
-			symptoms: {
-				morning: {
-					others: form['morningSymptoms-others'].value,
-				},
+
+		const formData = [...form.elements].reduce(
+			(memo, { name, value }) => {
+				if (name && !name.includes('.')) {
+					memo[name] = value
+				} else if (name) {
+					eval(`memo.${name}="${value}"`)
+				}
+
+				return memo
 			},
-		}
-		console.log({ data })
+			{
+				food: {},
+				sports: {},
+				outside: {},
+				symptoms: {
+					morning: {},
+					afternoon: {},
+					evening: {},
+					night: {},
+				},
+			}
+		)
+
+		console.log('formData is', formData)
 
 		addData({
 			variables: {
-				date: data.date,
-				data,
+				date: formData.date,
+				data: formData,
 			},
 		})
 	}
@@ -85,7 +97,8 @@ function App() {
 				{JSON.stringify(data.data)}
 				<form ref={formRef} onSubmit={handleSubmit}>
 					<label>
-						Date <input type="date" name="date" />
+						Date{' '}
+						<input autoFocus={true} required={true} type="date" name="date" />
 					</label>
 					<label>
 						Medicine <input name="medicine" />
@@ -93,8 +106,8 @@ function App() {
 					<label>
 						Medicine time{' '}
 						<select name="medicineTime">
-							<option>Morning</option>
-							<option>Evening</option>
+							<option>morning</option>
+							<option>evening</option>
 						</select>
 					</label>
 					<label>
@@ -104,96 +117,316 @@ function App() {
 						Wake up time <input type="time" name="waketime" />
 					</label>
 					<p>Number of hours slept: </p>
-
 					<label>
 						Dinner time <input type="time" name="dinnertime" />
 					</label>
-
 					<label>
-						Breakfast <textarea />
+						Breakfast <textarea name="food.breakfast" />
 					</label>
 					<label>
-						Lunch <textarea />
+						Lunch <textarea name="food.lunch" />
 					</label>
 					<label>
-						Dinner <textarea />
+						Dinner <textarea name="food.dinner" />
 					</label>
-
 					<label>
-						Training{' '}
-						<select>
-							<option>Yoga</option>
+						Sports
+						<select name="sports.name">
+							<option>yoga</option>
 						</select>
 					</label>
 					<label>
-						Training time{' '}
-						<select>
-							<option>Morning</option>
-							<option>Evening</option>
+						Sports time
+						<select name="sports.time">
+							<option>morning</option>
+							<option>evening</option>
 						</select>
 					</label>
-
+					Outside?
 					<label>
-						Outside? <input type="radio" /> Yes
+						<input type="radio" name="outside.value" value="true" /> Yes
 					</label>
 					<label>
-						Outside activity <input />
+						<input type="radio" name="outside.value" value="false" /> No
 					</label>
-
 					<label>
-						Menstruation <input type="radio" /> Yes
+						Outside activity <input name="outside.details" />
 					</label>
-
+					Menstruation
+					<label>
+						<input type="radio" name="menstruation" value="true" /> Yes
+					</label>
+					<label>
+						<input type="radio" name="menstruation" value="false" /> No
+					</label>
 					<h3>Symptoms</h3>
-
-					<h4>Morning</h4>
-					<p>
-						Sneezing <input type="radio" /> 0 <input type="radio" /> 1
-					</p>
-					<p>
-						Itchy eyes <input type="radio" /> 0 <input type="radio" /> 1
-					</p>
-					<p>
-						Runny nose <input type="radio" /> 0 <input type="radio" /> 1
-					</p>
-					<p>
-						Itchy throat <input type="radio" /> 0 <input type="radio" /> 1
-					</p>
-					<p>
-						Headache <input type="radio" /> 0 <input type="radio" /> 1
-					</p>
-					<p>
-						Breathing problems <input type="radio" /> 0 <input type="radio" /> 1
-					</p>
-					<p>
-						Tummy problems <input type="radio" /> 0 <input type="radio" /> 1
-					</p>
-					<p>
-						Others <input name="morningSymptoms-others" />
-					</p>
-
-					<h4>Lunch</h4>
-					<p>
-						Sneezing <input type="radio" /> 0 <input type="radio" /> 1
-					</p>
-
-					<h4>Afternoon</h4>
-					<p>
-						Sneezing <input type="radio" /> 0 <input type="radio" /> 1
-					</p>
-
-					<h4>Evening</h4>
-					<p>
-						Sneezing <input type="radio" /> 0 <input type="radio" /> 1
-					</p>
-
-					<h4>Night</h4>
-					<p>
-						Sneezing <input type="radio" /> 0 <input type="radio" /> 1
-					</p>
-
-					<button type="submit">Submit</button>
-					<button type="reset">Reset</button>
+					<table border="1">
+						<tbody>
+							<tr>
+								<td></td>
+								<td>Sneezing</td>
+								<td>Itchy eyes</td>
+								<td>Runny nose</td>
+								<td>Itchy throat</td>
+								<td>Headache</td>
+								<td>Breathing problems</td>
+								<td>Tummy problems</td>
+								<td>Others</td>
+							</tr>
+							<tr>
+								<td>Morning</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.morning.sneezing"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.morning.itchyEyes"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.morning.runnyNose"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.morning.itchyThroat"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.morning.headache"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.morning.breathingProblems"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.morning.tummyProblems"
+									/>
+								</td>
+								<td>
+									<input name="symptoms.morning.others" />
+								</td>
+							</tr>
+							<tr>
+								<td>Afternoon</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.afternoon.sneezing"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.afternoon.itchyEyes"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.afternoon.runnyNose"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.afternoon.itchyThroat"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.afternoon.headache"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.afternoon.breathingProblems"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.afternoon.tummyProblems"
+									/>
+								</td>
+								<td>
+									<input name="symptoms.afternoon.others" />
+								</td>
+							</tr>
+							<tr>
+								<td>Evening</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.evening.sneezing"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.evening.itchyEyes"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.evening.runnyNose"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.evening.itchyThroat"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.evening.headache"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.evening.breathingProblems"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.evening.tummyProblems"
+									/>
+								</td>
+								<td>
+									<input name="symptoms.evening.others" />
+								</td>
+							</tr>
+							<tr>
+								<td>Night</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.night.sneezing"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.night.itchyEyes"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.night.runnyNose"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.night.itchyThroat"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.night.headache"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.night.breathingProblems"
+									/>
+								</td>
+								<td>
+									<input
+										type="number"
+										min="0"
+										max="3"
+										name="symptoms.night.tummyProblems"
+									/>
+								</td>
+								<td>
+									<input name="symptoms.night.others" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<footer>
+						<button type="submit">Submit</button>
+						<button type="reset">Reset</button>
+					</footer>
 				</form>
 			</div>
 		</ApolloProvider>
