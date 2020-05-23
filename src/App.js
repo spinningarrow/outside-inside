@@ -34,7 +34,9 @@ const mutation = gql`
 
 function App() {
 	const { loading, error, data } = useQuery(query, { client })
-	const [addData, result] = useMutation(mutation, { client })
+	const [addData, { loading: mutationLoading }] = useMutation(mutation, {
+		client,
+	})
 
 	const formRef = React.createRef()
 
@@ -424,7 +426,9 @@ function App() {
 						</tbody>
 					</table>
 					<footer>
-						<button type="submit">Submit</button>
+						<button type="submit" disabled={mutationLoading}>
+							Submit
+						</button>
 						<button type="reset">Reset</button>
 					</footer>
 				</form>
