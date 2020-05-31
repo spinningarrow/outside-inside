@@ -191,32 +191,32 @@ function App() {
 						<legend>Activity</legend>
 						<fieldset>
 							<legend>Activity</legend>
-							Outside?
 							<label>
-								<input type="radio" name="outside.value" value="true" /> Yes
+								Outside <input type="checkbox" name="outside" />
 							</label>
 							<label>
-								<input type="radio" name="outside.value" value="false" /> No
+								Walk <input type="checkbox" name="walk" />
 							</label>
 							<label>
-								Outside activity <input name="outside.details" />
-							</label>
-						</fieldset>
-						<fieldset>
-							<legend>Sports</legend>
-							<label>
-								Sports
-								<select name="sports.name">
-									<option>yoga</option>
-								</select>
+								Bicycle <input type="checkbox" name="bicycle" />
 							</label>
 							<label>
-								Sports time
-								<select name="sports.time">
-									<option>morning</option>
-									<option>evening</option>
-								</select>
+								Shopping <input type="checkbox" name="shopping" />
 							</label>
+							<fieldset>
+								<legend>Sports</legend>
+								<label>
+									Yoga <input type="checkbox" name="yoga" />
+								</label>
+								<label>
+									Complete body workout{' '}
+									<input type="checkbox" name="completeBodyWorkout" />
+								</label>
+								<label>
+									Athletic Workout{' '}
+									<input type="checkbox" name="athleticWorkout" />
+								</label>
+							</fieldset>
 						</fieldset>
 					</fieldset>
 					<fieldset id="fieldset-symptoms">
