@@ -1,8 +1,9 @@
 import './App.css'
+import Overview from './Overview'
 import React from 'react'
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client'
-import { gql, useQuery, useMutation } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 
 const client = new ApolloClient({
 	cache: new InMemoryCache(),
@@ -14,15 +15,6 @@ const client = new ApolloClient({
 	}),
 })
 
-const query = gql`
-	query {
-		data {
-			date
-			data
-		}
-	}
-`
-
 const mutation = gql`
 	mutation($date: date, $data: jsonb) {
 		insert_data_one(object: { date: $date, data: $data }) {
@@ -33,11 +25,9 @@ const mutation = gql`
 `
 
 function App() {
-	const { loading, error, data } = useQuery(query, { client })
 	const [addData, { loading: mutationLoading }] = useMutation(mutation, {
 		client,
 	})
-	console.log('your data', data)
 
 	const formRef = React.createRef()
 
@@ -84,41 +74,13 @@ function App() {
 		})
 	}
 
-	if (loading) return <div>Loading</div>
-	if (error)
-		return (
-			<div>
-				<h1 onClick={setSecret}>Outside Inside</h1>
-				<p>Error :(</p>
-			</div>
-		)
-
 	return (
 		<ApolloProvider client={client}>
 			<div className="App">
 				<h1 onClick={setSecret}>Outside Inside</h1>
 
-				<details>
-					<summary>Your data</summary>
-					<table border="1">
-						<thead>
-							<tr>
-								<th>Date</th>
-								<th>Data</th>
-							</tr>
-						</thead>
-						<tbody>
-							{data.data.map(({ date, data }) => (
-								<tr key={date}>
-									<td>{date}</td>
-									<td>
-										<pre>{JSON.stringify(data, null, 2)}</pre>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-				</details>
+				<Overview />
+
 				<form ref={formRef} onSubmit={handleSubmit}>
 					<label>
 						Date{' '}
@@ -206,15 +168,23 @@ function App() {
 							<fieldset>
 								<legend>Sports</legend>
 								<label>
-									Yoga <input type="checkbox" name="yoga" />
+									Yoga <input type="checkbox" name="sports" value="yoga" />
 								</label>
 								<label>
 									Complete body workout{' '}
-									<input type="checkbox" name="completeBodyWorkout" />
+									<input
+										type="checkbox"
+										name="sports"
+										value="completeBodyWorkout"
+									/>
 								</label>
 								<label>
 									Athletic Workout{' '}
-									<input type="checkbox" name="athleticWorkout" />
+									<input
+										type="checkbox"
+										name="sports"
+										value="athleticWorkout"
+									/>
 								</label>
 							</fieldset>
 						</fieldset>
