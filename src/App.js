@@ -142,25 +142,18 @@ function App() {
 						<fieldset>
 							<legend>Medicine</legend>
 							<label>
-								Medicine <input name="medicine" />
+								Lorano Pro <input type="checkbox" name="loranoPro" />
 							</label>
 							<label>
-								Medicine time{' '}
-								<select name="medicineTime">
-									<option>morning</option>
-									<option>evening</option>
-								</select>
+								Lorano <input type="checkbox" name="lorano" />
+							</label>
+							<label>
+								Nasal spray <input type="checkbox" name="nasalSpray" />
 							</label>
 						</fieldset>
-						<p>
-							Menstruation
-							<label>
-								<input type="radio" name="menstruation" value="true" /> Yes
-							</label>
-							<label>
-								<input type="radio" name="menstruation" value="false" /> No
-							</label>
-						</p>
+						<label>
+							Menstruation <input type="checkbox" name="menstruation" />
+						</label>
 						<fieldset>
 							<legend>Sleep</legend>
 							<label>
@@ -169,7 +162,14 @@ function App() {
 							<label>
 								Wake up time <input type="time" name="waketime" />
 							</label>
-							<p>Number of hours slept: </p>
+							<output>Number of hours slept: </output>
+							<label>
+								Slept through <input type="checkbox" name="sleptThrough" />
+							</label>
+							<label>
+								Wake up early morning{' '}
+								<input type="checkbox" name="wakeupEarlyMorning" />
+							</label>
 						</fieldset>
 						<fieldset>
 							<legend>Food</legend>
