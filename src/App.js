@@ -124,7 +124,20 @@ function App() {
 						Date{' '}
 						<input autoFocus={true} required={true} type="date" name="date" />
 					</label>
-					<fieldset>
+					<nav>
+						<ul>
+							<li>
+								<a href="#fieldset-general">General</a>
+							</li>
+							<li>
+								<a href="#fieldset-activity">Activity</a>
+							</li>
+							<li>
+								<a href="#fieldset-symptoms">Symptoms</a>
+							</li>
+						</ul>
+					</nav>
+					<fieldset id="fieldset-general">
 						<legend>General</legend>
 						<fieldset>
 							<legend>Medicine</legend>
@@ -139,13 +152,15 @@ function App() {
 								</select>
 							</label>
 						</fieldset>
-						Menstruation
-						<label>
-							<input type="radio" name="menstruation" value="true" /> Yes
-						</label>
-						<label>
-							<input type="radio" name="menstruation" value="false" /> No
-						</label>
+						<p>
+							Menstruation
+							<label>
+								<input type="radio" name="menstruation" value="true" /> Yes
+							</label>
+							<label>
+								<input type="radio" name="menstruation" value="false" /> No
+							</label>
+						</p>
 						<fieldset>
 							<legend>Sleep</legend>
 							<label>
@@ -172,7 +187,7 @@ function App() {
 							</label>
 						</fieldset>
 					</fieldset>
-					<fieldset>
+					<fieldset id="fieldset-activity">
 						<legend>Activity</legend>
 						<fieldset>
 							<legend>Activity</legend>
@@ -204,7 +219,7 @@ function App() {
 							</label>
 						</fieldset>
 					</fieldset>
-					<fieldset>
+					<fieldset id="fieldset-symptoms">
 						<legend>Symptoms</legend>
 						<table border="1">
 							<tbody>
